@@ -1,0 +1,140 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SWI Plugin Translation\n"
+"POT-Creation-Date: 2017-04-10 15:07+0200\n"
+"PO-Revision-Date: 2017-04-10 15:07+0200\n"
+"Last-Translator: Evgvenii Solovei <e.solovey@yandex.ru>\n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.4\n"
+"X-Poedit-Basepath: ../\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: swinfo_main.php:22 swinfo_main.php:23 swinfo_main.php:24 swinfo_main.php:25
+msgid "Software"
+msgstr ""
+
+#: swinfo_main.php:26
+msgid "Add New"
+msgstr ""
+
+#: swinfo_main.php:27
+msgid "Add New Software"
+msgstr ""
+
+#: swinfo_main.php:28
+msgid "New Software"
+msgstr ""
+
+#: swinfo_main.php:29
+msgid "Edit Software"
+msgstr ""
+
+#: swinfo_main.php:30
+msgid "View Software"
+msgstr ""
+
+#: swinfo_main.php:31
+msgid "All Software"
+msgstr ""
+
+#: swinfo_main.php:32
+msgid "Search Software"
+msgstr ""
+
+#: swinfo_main.php:33
+msgid "Parent Software:"
+msgstr ""
+
+#: swinfo_main.php:34
+msgid "No Software found."
+msgstr ""
+
+#: swinfo_main.php:35
+msgid "No Software found in Trash."
+msgstr ""
+
+#: swinfo_main.php:40
+msgid "Description."
+msgstr ""
+
+#: swinfo_main.php:56
+msgid "Developers"
+msgstr ""
+
+#: swinfo_main.php:57 swinfo_main.php:66
+msgid "Developer"
+msgstr ""
+
+#: swinfo_main.php:58
+msgid "Search Developer"
+msgstr ""
+
+#: swinfo_main.php:59
+msgid "All Developers"
+msgstr ""
+
+#: swinfo_main.php:60
+msgid "Parent Developer"
+msgstr ""
+
+#: swinfo_main.php:61
+msgid "Parent Developer:"
+msgstr ""
+
+#: swinfo_main.php:62
+msgid "Edit Developer"
+msgstr ""
+
+#: swinfo_main.php:63
+msgid "Update Developer"
+msgstr ""
+
+#: swinfo_main.php:64
+msgid "Add New Developer"
+msgstr ""
+
+#: swinfo_main.php:65
+msgid "New Developer Name"
+msgstr ""
+
+#: swinfo_main.php:81 swinfo_main.php:82 swinfo_main.php:89
+msgid "Year"
+msgstr ""
+
+#: swinfo_main.php:83
+msgid "Search Year"
+msgstr ""
+
+#: swinfo_main.php:84
+msgid "All Years"
+msgstr ""
+
+#: swinfo_main.php:85
+msgid "Edit Year"
+msgstr ""
+
+#: swinfo_main.php:86
+msgid "Update Year"
+msgstr ""
+
+#: swinfo_main.php:87
+msgid "Add New Year"
+msgstr ""
+
+#: swinfo_main.php:88
+msgid "New Year Name"
+msgstr ""
+
+#: swinfo_main.php:117
+msgid "Additional"
+msgstr ""
+
+#: swinfo_main.php:118
+msgid "Help"
+msgstr ""
