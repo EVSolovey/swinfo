@@ -6,9 +6,17 @@
     transition: 0.3s;
 	font-family: "Segoe UI",Arial,sans-serif;
 	border-radius:5px 5px 5px 5px;
-	border:1px solid rgba(0,0,0,0.2);
+	margin-bottom:10px;
 }
 
+.swi_green {
+	background:#e6ee9c;
+	border:1px solid #689f38;
+}
+.swi_red {
+	background:#ffd0b0;
+	border:1px solid #e53935;
+}
 .swi_card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
@@ -16,6 +24,7 @@
 .swi_image {
     width: 30%;
     float: left;
+	background-color:white;
 }
 
 .swi_image img {
@@ -51,6 +60,17 @@
     color: #fff;
 	text-decoration:none;
 	padding:5px;
+}
+
+.swi_btn_green {
+	background-color: #689f38!important;
+}
+
+.swi_btn_red {
+	background-color: #e53935!important;
+}
+.swi_content a:hover {
+    color: #fff;
 }
 
 .swi_rm {
