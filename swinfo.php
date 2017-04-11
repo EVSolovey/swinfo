@@ -171,7 +171,18 @@ Domain Path: /languages
 		global $pagenow;
 		if (($post->post_type=="software")&&($pagenow=='post-new.php')) {
 			 echo '<div class="notice notice-info is-dismissible">
-						<p>'.__('Help information.').'</p>
+						<p>'.__('Add software. You can enter shortcode [swinfo id="" width=""] on any page to show software card or cards.').'</p>
+						<p>'.__('id - list of ids of software posts. You can find it on software list page.').'</p>
+						<p>'.__('width - width of software card in %.').'</p>
+						<p>'.__('Shortcode examples:').'</p>
+						<p>'.__('[swinfo id="all" width="100%"]: displays all software posts, width of software card is 100% of parent container.').'</p>
+						<p>'.__('[swinfo id="2,6,7" width="70%"]: displays software posts with ids 2,6 and 7, width of software card is 70% of parent container.').'</p>
+						<p>'.__('[swinfo id="12" width="30%"]: displays one software posts with id 12, width of software card is 30% of parent container.').'</p>
+				</div>';
+		}
+		if (($post->post_type=="software")&&($pagenow=='post.php')) {
+			echo '<div class="notice notice-info is-dismissible">
+						<p>'.__('This software id is ').$post->ID.'</p>
 				</div>';
 		}
 	}
@@ -180,19 +191,46 @@ Domain Path: /languages
 	/*************************/
 	// shortcode output
 	function swi_html_output($attrs) {
+		wp_enqueue_style('swi-main-styles');
 		$attrs = shortcode_atts(
 			array(
 				'id' => 'all',
 				'template' => 'modern',
+				'width' => '100%'
 			), $attrs, 'swinfo' );
+		echo($attrs['id']);
 		if ($attrs['id']=='all') {
-			//$posts = 
-		}
-		if (strpos($attrs['id'], ',')===true) {
-			$ids = explode(',',$attrs['id']);
-		}
+			$args = array(
+				'post_type' => 'software',
+				'numberposts' => 0
+			); 
+		} else {
+				$ids = explode(',',$attrs['id']);
+				$args = array(
+					'post_type' => 'software',
+					'post__in' => $ids
+				);
+			}
 		
-		return 'swinfo: ' . $attrs['id'] . ' ' . $attrs['template'];
+		$softw_array = get_posts( $args );
+		print_r($softw_array);
+		if ($attrs['width']!="100%") {
+			$card_style = 'style="width:'.$attrs['width'].'!important;"';
+		}
+		$s='<div class="swi_card" '.$card_style.'>
+			<div class="swi_image">
+				<a href=""><img src="http://www.softwareag.com/us/images/SAG_Logo_RGB_tcm89-134070.jpg"></a>
+			</div>
+			<div class="swi_content">
+				<h5>Software title <span class="sw_grey">Developer, year</span></h5>
+				<p>Software description</p>
+				<div class="swi_rm">
+					<a href="">Read more</a>
+				</div>
+			</div>
+		</div>';
+		//return 'swinfo: ' . $attrs['id'] . ' ' . $attrs['template'];
+		return $s;
 	}
 	add_shortcode('swinfo', 'swi_html_output');
 	
@@ -211,4 +249,25 @@ Domain Path: /languages
 	}
 
 	add_filter("mce_buttons", "swi_add_button");
+	
+	/*************************/
+	// load css file
+	function swi_register_css() {
+		wp_register_style("swi-main-styles", plugins_url("css/main.css", __FILE__), array(), "1.0", "all");
+	}
+	add_action( 'init', 'swi_register_css' );
+	
+	/*************************/
+	// change list table, add new column
+	function swi_add_column( $columns ) {
+		$columns["swi_id"] = "ID";
+		return $columns;
+	}
+	add_action('manage_edit-software_columns', 'swi_add_column', 10, 2);
+	
+	function swi_change_id_column( $name, $id ) {
+    if ( $name == 'swi_id')
+          echo $id;
+	}
+	add_action('manage_software_posts_custom_column', 'swi_change_id_column', 10, 2);
 ?>
