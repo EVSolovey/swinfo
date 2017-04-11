@@ -124,7 +124,7 @@ Domain Path: /languages
 	register_deactivation_hook( __FILE__, 'swi_deactivate_plugin' );
 	
 	/*************************/
-	// add custom metavox to software page
+	// add custom metabox to software page
 	function swi_add_meta_boxes( $post ){
 		add_meta_box( 'software_meta_box', __( 'Additional', 'swi' ), 'swi_build_meta_box', 'software', 'side', 'low' );
 	}
@@ -176,4 +176,23 @@ Domain Path: /languages
 		}
 	}
 	add_action('admin_notices', 'swi_admin_notice');
+	
+	/*************************/
+	// shortcode output
+	function swi_html_output($attrs) {
+		$attrs = shortcode_atts(
+			array(
+				'id' => 'all',
+				'template' => 'modern',
+			), $attrs, 'swinfo' );
+		if ($attrs['id']=='all') {
+			//$posts = 
+		}
+		if (strpos($attrs['id'], ',')===true) {
+			$ids = explode(',',$attrs['id']);
+		}
+		
+		return 'swinfo: ' . $attrs['id'] . ' ' . $attrs['template'];
+	}
+	add_shortcode('swinfo', 'swi_html_output');
 ?>
