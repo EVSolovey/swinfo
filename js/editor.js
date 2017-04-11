@@ -10,7 +10,7 @@
             //button functionality.
             ed.addCommand("swinfo_add", function() {
                 var selected_text = ed.selection.getContent();
-                var return_text = "[swinfo id='' template='modern']";
+                var return_text = "[swinfo id='' width='100%']";
                 ed.execCommand("mceInsertContent", 0, return_text);
             });
 
