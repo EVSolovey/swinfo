@@ -195,4 +195,20 @@ Domain Path: /languages
 		return 'swinfo: ' . $attrs['id'] . ' ' . $attrs['template'];
 	}
 	add_shortcode('swinfo', 'swi_html_output');
+	
+	/*************************/
+	// add shortcode button to WP visual editor
+	function swi_add_btn_script($plugin_array) {
+		$plugin_array["swi_button_plugin"] =  plugin_dir_url(__FILE__) . "js/editor.js";
+		return $plugin_array;
+	}
+
+	add_filter("mce_external_plugins", "swi_add_btn_script");
+	
+	function swi_add_button($buttons) {
+        array_push($buttons, "swinfo");
+		return $buttons;
+	}
+
+	add_filter("mce_buttons", "swi_add_button");
 ?>
