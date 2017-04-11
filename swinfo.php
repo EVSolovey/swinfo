@@ -52,7 +52,7 @@ Domain Path: /languages
 			'has_archive'        => true,
 			'hierarchical'       => false,
 			'menu_position'      => null,
-			'supports'           => array( 'title', 'editor', 'author', 'thumbnail' )
+			'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt' )
 		);
 		register_post_type( 'software',$args);
 		
@@ -126,7 +126,7 @@ Domain Path: /languages
 	/*************************/
 	// add custom metabox to software page
 	function swi_add_meta_boxes( $post ){
-		add_meta_box( 'software_meta_box', __( 'Additional', 'swi' ), 'swi_build_meta_box', 'software', 'side', 'low' );
+		add_meta_box( 'software_meta_box', __( 'Additional', 'swi' ), 'swi_build_meta_box', 'software', 'advanced', 'low' );
 	}
 	add_action( 'add_meta_boxes_software', 'swi_add_meta_boxes' );
 	
@@ -198,7 +198,7 @@ Domain Path: /languages
 				'template' => 'modern',
 				'width' => '100%'
 			), $attrs, 'swinfo' );
-		echo($attrs['id']);
+		//echo($attrs['id']);
 		if ($attrs['id']=='all') {
 			$args = array(
 				'post_type' => 'software',
@@ -213,27 +213,68 @@ Domain Path: /languages
 			}
 		
 		$softw_array = get_posts( $args );
-		print_r($softw_array);
+		//print_r($softw_array);
 		if ($attrs['width']!="100%") {
 			$card_style = 'style="width:'.$attrs['width'].'!important;"';
 		}
-		$s='<div class="swi_card" '.$card_style.'>
-			<div class="swi_image">
-				<a href=""><img src="http://www.softwareag.com/us/images/SAG_Logo_RGB_tcm89-134070.jpg"></a>
-			</div>
-			<div class="swi_content">
-				<h5>Software title <span class="sw_grey">Developer, year</span></h5>
-				<p>Software description</p>
-				<div class="swi_rm">
-					<a href="">Read more</a>
-				</div>
-			</div>
-		</div>';
+		if (count($softw_array)>0) {
+			$s='';
+			foreach ($softw_array as $soft) {
+				$sw_image = get_the_post_thumbnail_url($soft->ID);
+				
+				$years = get_the_terms( $soft->ID, 'year' );
+				if ( $years && ! is_wp_error( $years ) ) { 
+					$years_text = array();
+					foreach ( $years as $year ) {
+						$years_text[] = $year->name;
+					}
+					$years_output = join( ", ", $years_text );
+					$years_output=' <span>'.$years_output.'</span>';
+				}
+				if ($sw_image) {
+					$sw_image_output = '<a href=""><img src="'.$sw_image.'"></a>';
+				}
+				$developers_txt = swi_get_post_taxonomy($soft->ID,"developer");
+				$years_txt = swi_get_post_taxonomy($soft->ID,"year");
+				$s.='<div class="swi_card" '.$card_style.'>
+					<div class="swi_image">'.$sw_image_output.'</div>
+					<div class="swi_content">
+						<h5>'.$soft->post_title;
+				if ($developers_txt) {
+					$s.=' '.$developers_txt;
+				}
+				if ($years_txt) {
+					$s.=', '.$years_txt;
+				}
+				$s.='</h5>';
+				if ($soft->post_excerpt) {
+					$s.='<p>'.$soft->post_excerpt.'</p>';
+				}
+				$s.='<div class="swi_rm">
+						<a href="'.$soft->guid.'">'.__('Read more','swi').'</a>
+					</div>
+					</div>
+				</div>';
+			}
+		}
 		//return 'swinfo: ' . $attrs['id'] . ' ' . $attrs['template'];
 		return $s;
 	}
 	add_shortcode('swinfo', 'swi_html_output');
 	
+	function swi_get_post_taxonomy($id,$taxonomy) {
+		$terms = get_the_terms( $id, $taxonomy );
+		//print_r($terms);
+		if ( $terms && ! is_wp_error( $terms ) ) { 
+			$terms_text = array();
+			foreach ( $terms as $term ) {
+				$terms_text[] = $term->name;
+			}
+			$terms_output = join( ", ", $terms_text );
+			$terms_output='<span>'.$terms_output.'</span>';
+		}
+		return $terms_output;
+	}
 	/*************************/
 	// add shortcode button to WP visual editor
 	function swi_add_btn_script($plugin_array) {
