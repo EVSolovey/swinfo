@@ -221,22 +221,22 @@ Domain Path: /languages
 			$s='';
 			foreach ($softw_array as $soft) {
 				$sw_image = get_the_post_thumbnail_url($soft->ID);
-				
-				$years = get_the_terms( $soft->ID, 'year' );
-				if ( $years && ! is_wp_error( $years ) ) { 
-					$years_text = array();
-					foreach ( $years as $year ) {
-						$years_text[] = $year->name;
-					}
-					$years_output = join( ", ", $years_text );
-					$years_output=' <span>'.$years_output.'</span>';
+				$actuality = get_post_meta($soft->ID,'_swi_relevance',true);
+				if ($actuality=='on') {
+					$actuality_class="swi_green";
+					$btn_class = "swi_btn_green";
+				} else {
+					$actuality_class="swi_red";
+					$btn_class = "swi_btn_red";
 				}
 				if ($sw_image) {
-					$sw_image_output = '<a href=""><img src="'.$sw_image.'"></a>';
+					$sw_image_output = '<a href="'.$soft->guid.'"><img src="'.$sw_image.'"></a>';
+				} else {
+					$sw_image_output='';
 				}
 				$developers_txt = swi_get_post_taxonomy($soft->ID,"developer");
 				$years_txt = swi_get_post_taxonomy($soft->ID,"year");
-				$s.='<div class="swi_card" '.$card_style.'>
+				$s.='<div class="swi_card '.$actuality_class.'" '.$card_style.'>
 					<div class="swi_image">'.$sw_image_output.'</div>
 					<div class="swi_content">
 						<h5>'.$soft->post_title;
@@ -251,9 +251,9 @@ Domain Path: /languages
 					$s.='<p>'.$soft->post_excerpt.'</p>';
 				}
 				$s.='<div class="swi_rm">
-						<a href="'.$soft->guid.'">'.__('Read more','swi').'</a>
+						<a class="'.$btn_class.'" href="'.$soft->guid.'">'.__('Read more','swi').'</a>
 					</div>
-					</div>
+				  </div>
 				</div>';
 			}
 		}
