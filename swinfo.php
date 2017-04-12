@@ -112,6 +112,27 @@ Domain Path: /languages
 	function swi_activate_plugin() {
 		swi_setup_post_types();
 		flush_rewrite_rules();
+		swi_create_log_table();
+	}
+	
+	function swi_create_log_table() {
+		global $wpdb;
+		$wpdb->query( 
+				"CREATE TABLE IF NOT EXISTS  `swi_log` (
+					`id` BIGINT( 20 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+					`swi_date` DATETIME NOT NULL ,
+					`page_link` VARCHAR( 255 ) NOT NULL ,
+					`software_id` BIGINT( 20 ) UNSIGNED NOT NULL
+					)"
+			);
+		if($wpdb->last_error !== '') {
+				// log errors
+		} else {
+			$posts_table = $wpdb->prefix."posts";
+			$wpdb->query( 
+					"ALTER TABLE `swi_log` ADD FOREIGN KEY (`software_id`) REFERENCES `".$posts_table."` (`ID`)"
+			);
+		}
 	}
 	
 	register_activation_hook( __FILE__, 'swi_activate_plugin' );
@@ -169,24 +190,26 @@ Domain Path: /languages
 	function swi_admin_notice(){
 		global $post;
 		global $pagenow;
-		if (($post->post_type=="software")&&($pagenow=='post-new.php')) {
-			 echo '<div class="notice notice-info is-dismissible">
-						<p>'.__('Add software. You can enter shortcode [swinfo id="" width=""] on any page to show software card or cards.').'</p>
-						<p>'.__('id - list of ids of software posts. You can find it on software list page.').'</p>
-						<p>'.__('width - width of software card in %.').'</p>
-						<p>'.__('Shortcode examples:').'</p>
-						<p>'.__('[swinfo id="all" width="100%"]: displays all software posts, width of software card is 100% of parent container.').'</p>
-						<p>'.__('[swinfo id="2,6,7" width="70%"]: displays software posts with ids 2,6 and 7, width of software card is 70% of parent container.').'</p>
-						<p>'.__('[swinfo id="12" width="30%"]: displays one software posts with id 12, width of software card is 30% of parent container.').'</p>
-				</div>';
-		}
-		if (($post->post_type=="software")&&($pagenow=='post.php')) {
-			echo '<div class="notice notice-info is-dismissible">
-						<p>'.__('This software id is ').$post->ID.'</p>
-				</div>';
+		if (isset($post)) {
+			if (($post->post_type=="software")&&($pagenow=='post-new.php')) {
+				 echo '<div class="notice notice-info is-dismissible">
+							<p>'.__('Add software. You can enter shortcode [swinfo id="" width=""] on any page to show software card or cards.').'</p>
+							<p>'.__('id - list of ids of software posts. You can find it on software list page.').'</p>
+							<p>'.__('width - width of software card in %.').'</p>
+							<p>'.__('Shortcode examples:').'</p>
+							<p>'.__('[swinfo id="all" width="100%"]: displays all software posts, width of software card is 100% of parent container.').'</p>
+							<p>'.__('[swinfo id="2,6,7" width="70%"]: displays software posts with ids 2,6 and 7, width of software card is 70% of parent container.').'</p>
+							<p>'.__('[swinfo id="12" width="30%"]: displays one software posts with id 12, width of software card is 30% of parent container.').'</p>
+					</div>';
+			}
+			if (($post->post_type=="software")&&($pagenow=='post.php')) {
+				echo '<div class="notice notice-info is-dismissible">
+							<p>'.__('This software id is ').$post->ID.'</p>
+					</div>';
+			}
 		}
 	}
-	add_action('admin_notices', 'swi_admin_notice');
+	add_action('admin_notices', 'swi_admin_notice',25);
 	
 	/*************************/
 	// shortcode output
@@ -234,6 +257,7 @@ Domain Path: /languages
 				} else {
 					$sw_image_output='';
 				}
+				$card_style='';
 				$developers_txt = swi_get_post_taxonomy($soft->ID,"developer");
 				$years_txt = swi_get_post_taxonomy($soft->ID,"year");
 				$s.='<div class="swi_card '.$actuality_class.'" '.$card_style.'>
@@ -255,6 +279,9 @@ Domain Path: /languages
 					</div>
 				  </div>
 				</div>';
+				$now = date("Y-m-d H:i:s");
+				global $post;
+				swi_log_view($now, $post->guid, $soft->ID);
 			}
 		}
 		//return 'swinfo: ' . $attrs['id'] . ' ' . $attrs['template'];
@@ -262,8 +289,21 @@ Domain Path: /languages
 	}
 	add_shortcode('swinfo', 'swi_html_output');
 	
+	function swi_log_view($time, $page, $software) {
+		global $wpdb;
+		$wpdb->insert( 
+			'swi_log', 
+			array( 
+				'swi_date' => $time, 
+				'page_link' => $page,
+				'software_id' => $software
+			)
+		);
+	}
+	
 	function swi_get_post_taxonomy($id,$taxonomy) {
 		$terms = get_the_terms( $id, $taxonomy );
+		$terms_output = '';
 		//print_r($terms);
 		if ( $terms && ! is_wp_error( $terms ) ) { 
 			$terms_text = array();
