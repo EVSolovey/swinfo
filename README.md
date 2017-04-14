@@ -12,3 +12,7 @@ Shortcode examples:
 - [swinfo id="all" width="100%"]: displays all software posts, width of software card is 100% of parent container.
 - [swinfo id="2,6,7" width="70%"]: displays software posts with ids 2,6 and 7, width of software card is 70% of parent container.
 - [swinfo id="12" width="30%"]: displays one software posts with id 12, width of software card is 30% of parent container.
+
+Plugin creates settings page in Wordpress admin menu called "Software settings". This page allows to change background color for software cards elements.
+
+To instal plugin, load *.zip file to wp-content/plugins, extract it and activate throw Wordpress dashboard.
