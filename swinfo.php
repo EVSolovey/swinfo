@@ -113,6 +113,11 @@ Domain Path: /languages
 		swi_setup_post_types();
 		flush_rewrite_rules();
 		swi_create_log_table();
+		add_option('swi_actual_card_color','#e6ee9c');
+		add_option('swi_non_actual_card_color','#ffd0b0');
+		add_option('swi_actual_button_color','#689f38');
+		add_option('swi_non_actual_button_color','#e53935');
+		add_option('swi_delete_logs',1);
 	}
 	
 	function swi_create_log_table() {
@@ -140,7 +145,17 @@ Domain Path: /languages
 	/*************************/
 	// plugin deactivation 
 	function swi_deactivate_plugin() {
-		
+		delete_option( 'swi_actual_card_color' );
+		delete_option( 'swi_non_actual_card_color' );
+		delete_option( 'swi_actual_button_color' );
+		delete_option( 'swi_non_actual_button_color' );
+		if (get_option('swi_delete_logs')=='1') {
+			global $wpdb;
+			$wpdb->query( 
+				"DROP TABLE IF EXISTS `swi_log`"
+			);
+		}
+		delete_option( 'swi_delete_logs' );
 	}
 	register_deactivation_hook( __FILE__, 'swi_deactivate_plugin' );
 	
@@ -193,13 +208,13 @@ Domain Path: /languages
 		if (isset($post)) {
 			if (($post->post_type=="software")&&($pagenow=='post-new.php')) {
 				 echo '<div class="notice notice-info is-dismissible">
-							<p>'.__('Add software. You can enter shortcode [swinfo id="" width=""] on any page to show software card or cards.').'</p>
-							<p>'.__('id - list of ids of software posts. You can find it on software list page.').'</p>
-							<p>'.__('width - width of software card in %.').'</p>
-							<p>'.__('Shortcode examples:').'</p>
-							<p>'.__('[swinfo id="all" width="100%"]: displays all software posts, width of software card is 100% of parent container.').'</p>
-							<p>'.__('[swinfo id="2,6,7" width="70%"]: displays software posts with ids 2,6 and 7, width of software card is 70% of parent container.').'</p>
-							<p>'.__('[swinfo id="12" width="30%"]: displays one software posts with id 12, width of software card is 30% of parent container.').'</p>
+							<p>'.__("Add software. You can enter shortcode [swinfo id='' width=''] on any page to show software card or cards.","swi").'</p>
+							<p>'.__('id - list of ids of software posts. You can find it on software list page.',"swi").'</p>
+							<p>'.__('width - width of software card in %.',"swi").'</p>
+							<p>'.__('Shortcode examples:',"swi").'</p>
+							<p>'.__('[swinfo id="all" width="100%"]: displays all software posts, width of software card is 100% of parent container.',"swi").'</p>
+							<p>'.__('[swinfo id="2,6,7" width="70%"]: displays software posts with ids 2,6 and 7, width of software card is 70% of parent container.',"swi").'</p>
+							<p>'.__('[swinfo id="12" width="30%"]: displays one software posts with id 12, width of software card is 30% of parent container.',"swi").'</p>
 					</div>';
 			}
 			if (($post->post_type=="software")&&($pagenow=='post.php')) {
@@ -242,15 +257,39 @@ Domain Path: /languages
 		}
 		if (count($softw_array)>0) {
 			$s='';
+			$swi_opt_actual = get_option("swi_actual_card_color");
+			$swi_opt_non_actual=get_option("swi_non_actual_card_color");
+			$swi_opt_btn_actual = get_option("swi_actual_button_color");
+			$swi_opt_btn_non_actual=get_option("swi_non_actual_button_color");
 			foreach ($softw_array as $soft) {
 				$sw_image = get_the_post_thumbnail_url($soft->ID);
 				$actuality = get_post_meta($soft->ID,'_swi_relevance',true);
 				if ($actuality=='on') {
-					$actuality_class="swi_green";
-					$btn_class = "swi_btn_green";
+					if (($swi_opt_actual)&&(preg_match( '/^#[a-f0-9]{6}$/i', $swi_opt_actual ))) {
+						$card_div = 'class="swi_card" style="background-color:'.$swi_opt_actual.'"';
+						
+					} else {
+						$card_div='class="swi_card swi_green"';
+						
+					}
+					if (($swi_opt_btn_actual)&&(preg_match( '/^#[a-f0-9]{6}$/i', $swi_opt_btn_actual ))) {
+						$button_div = 'style="background-color:'.$swi_opt_btn_actual.'"';
+					} else {
+						$button_div = 'class="swi_btn_green"';
+					}
 				} else {
-					$actuality_class="swi_red";
-					$btn_class = "swi_btn_red";
+					if (($swi_opt_non_actual)&&(preg_match( '/^#[a-f0-9]{6}$/i', $swi_opt_non_actual ))) {
+						$card_div = 'class="swi_card" style="background-color:'.$swi_opt_non_actual.'"';
+						
+					} else {
+						$card_div='class="swi_card swi_red"';
+					}
+					if (($swi_opt_btn_non_actual)&&(preg_match( '/^#[a-f0-9]{6}$/i', $swi_opt_btn_non_actual ))) {
+						$button_div = 'style="background-color:'.$swi_opt_btn_non_actual.'"';
+					} else {
+						$button_div = 'class="swi_btn_green"';
+						$button_div = 'class="swi_btn_red"';
+					}
 				}
 				if ($sw_image) {
 					$sw_image_output = '<a href="'.$soft->guid.'"><img src="'.$sw_image.'"></a>';
@@ -260,7 +299,7 @@ Domain Path: /languages
 				$card_style='';
 				$developers_txt = swi_get_post_taxonomy($soft->ID,"developer");
 				$years_txt = swi_get_post_taxonomy($soft->ID,"year");
-				$s.='<div class="swi_card '.$actuality_class.'" '.$card_style.'>
+				$s.='<div '.$card_div.'>
 					<div class="swi_image">'.$sw_image_output.'</div>
 					<div class="swi_content">
 						<h5>'.$soft->post_title;
@@ -275,7 +314,7 @@ Domain Path: /languages
 					$s.='<p>'.$soft->post_excerpt.'</p>';
 				}
 				$s.='<div class="swi_rm">
-						<a class="'.$btn_class.'" href="'.$soft->guid.'">'.__('Read more','swi').'</a>
+						<a '.$button_div.' href="'.$soft->guid.'">'.__('Read more','swi').'</a>
 					</div>
 				  </div>
 				</div>';
@@ -351,4 +390,78 @@ Domain Path: /languages
           echo $id;
 	}
 	add_action('manage_software_posts_custom_column', 'swi_change_id_column', 10, 2);
+	
+	/*************************/
+	// add settings page
+	function swi_settings_page(){
+		?>
+	    <div class="wrap">
+	    <h1><?php echo __("Software plugin settings","swi"); ?></h1>
+	    <form method="post" action="options.php">
+	        <?php
+	            settings_fields("swi_settings_fields");
+	            do_settings_sections("swi_plugin_options");      
+	            submit_button(); 
+	        ?>          
+	    </form>
+		</div>
+	<?php
+	}
+	
+	function swi_display_actual_card_color_element() {
+		?>
+			<input type="text" name="swi_actual_card_color" id="swi_actual_card_color" value="<?php echo get_option('swi_actual_card_color'); ?>" />
+			<p><?php echo __("Background color of relevant software card in HEX format.","swi"); ?></p>
+		<?php
+	}
+	
+	function swi_display_actual_button_color_element() {
+		?>
+			<input type="text" name="swi_actual_button_color" id="swi_actual_card_color" value="<?php echo get_option('swi_actual_button_color'); ?>" />
+			<p><?php echo __("Background color of relevant software 'Read more' button in HEX format.","swi"); ?></p>
+		<?php
+	}
+
+	function swi_display_non_actual_card_color_element() {
+		?>
+			<input type="text" name="swi_non_actual_card_color" id="swi_non_actual_card_color" value="<?php echo get_option('swi_non_actual_card_color'); ?>" />
+			<p><?php echo __("Background color of not relevant software card in HEX format.","swi"); ?></p>
+		<?php
+	}
+	
+	function swi_display_non_actual_button_color_element() {
+		?>
+			<input type="text" name="swi_non_actual_button_color" id="swi_non_actual_button_color" value="<?php echo get_option('swi_non_actual_button_color'); ?>" />
+			<p><?php echo __("Background color of not relevant software 'Read more' button in HEX format.","swi"); ?></p>
+		<?php
+	}
+
+	function swi_display_delete_logs() {
+		?>
+			<input type="checkbox" name="swi_delete_logs" value="1" <?php checked(1, get_option('swi_delete_logs'), true); ?> /> 
+		<?php
+	}
+
+	function swi_display_settings_page_fields() {
+		add_settings_section("swi_settings_fields", __("Main options","swi"), null, "swi_plugin_options");
+		
+		add_settings_field("swi_actual_card_color", __("Actual card color","swi"), "swi_display_actual_card_color_element", "swi_plugin_options", "swi_settings_fields");
+		add_settings_field("swi_actual_button_color", __("Actual button color","swi"), "swi_display_actual_button_color_element", "swi_plugin_options", "swi_settings_fields");
+		add_settings_field("swi_non_actual_card_color", __("Not relevant card color","swi"), "swi_display_non_actual_card_color_element", "swi_plugin_options", "swi_settings_fields");
+		add_settings_field("swi_non_actual_button_color", __("Not relevant button color","swi"), "swi_display_non_actual_button_color_element", "swi_plugin_options", "swi_settings_fields");
+		add_settings_field("swi_delete_logs", __("Delete logs after plugin deactivation?","swi"), "swi_display_delete_logs", "swi_plugin_options", "swi_settings_fields");
+
+		register_setting("swi_settings_fields", "swi_actual_card_color");
+		register_setting("swi_settings_fields", "swi_actual_button_color");
+		register_setting("swi_settings_fields", "swi_non_actual_card_color");
+		register_setting("swi_settings_fields", "swi_non_actual_button_color");
+		register_setting("swi_settings_fields", "swi_delete_logs");
+	}
+
+	add_action("admin_init", "swi_display_settings_page_fields");
+	
+	function swi_add_settings_link() {
+		add_menu_page(__("Software settings page","swi"), __("Software settings","swi"), "edit_posts", "swi_options_page", "swi_settings_page", '', 84);
+	}
+	add_action("admin_menu", "swi_add_settings_link");
 ?>
