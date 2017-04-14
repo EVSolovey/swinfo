@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SWI Plugin Translation\n"
-"POT-Creation-Date: 2017-04-10 15:07+0200\n"
-"PO-Revision-Date: 2017-04-10 15:07+0200\n"
+"POT-Creation-Date: 2017-04-14 14:07+0200\n"
+"PO-Revision-Date: 2017-04-14 14:07+0200\n"
 "Last-Translator: Evgvenii Solovei <e.solovey@yandex.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -15,126 +15,224 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: swinfo_main.php:22 swinfo_main.php:23 swinfo_main.php:24 swinfo_main.php:25
+#: swinfo.php:26 swinfo.php:27 swinfo.php:28 swinfo.php:29
 msgid "Software"
 msgstr ""
 
-#: swinfo_main.php:26
+#: swinfo.php:30
 msgid "Add New"
 msgstr ""
 
-#: swinfo_main.php:27
+#: swinfo.php:31
 msgid "Add New Software"
 msgstr ""
 
-#: swinfo_main.php:28
+#: swinfo.php:32
 msgid "New Software"
 msgstr ""
 
-#: swinfo_main.php:29
+#: swinfo.php:33
 msgid "Edit Software"
 msgstr ""
 
-#: swinfo_main.php:30
+#: swinfo.php:34
 msgid "View Software"
 msgstr ""
 
-#: swinfo_main.php:31
+#: swinfo.php:35
 msgid "All Software"
 msgstr ""
 
-#: swinfo_main.php:32
+#: swinfo.php:36
 msgid "Search Software"
 msgstr ""
 
-#: swinfo_main.php:33
+#: swinfo.php:37
 msgid "Parent Software:"
 msgstr ""
 
-#: swinfo_main.php:34
+#: swinfo.php:38
 msgid "No Software found."
 msgstr ""
 
-#: swinfo_main.php:35
+#: swinfo.php:39
 msgid "No Software found in Trash."
 msgstr ""
 
-#: swinfo_main.php:40
+#: swinfo.php:44
 msgid "Description."
 msgstr ""
 
-#: swinfo_main.php:56
+#: swinfo.php:60
 msgid "Developers"
 msgstr ""
 
-#: swinfo_main.php:57 swinfo_main.php:66
+#: swinfo.php:61 swinfo.php:70
 msgid "Developer"
 msgstr ""
 
-#: swinfo_main.php:58
+#: swinfo.php:62
 msgid "Search Developer"
 msgstr ""
 
-#: swinfo_main.php:59
+#: swinfo.php:63
 msgid "All Developers"
 msgstr ""
 
-#: swinfo_main.php:60
+#: swinfo.php:64
 msgid "Parent Developer"
 msgstr ""
 
-#: swinfo_main.php:61
+#: swinfo.php:65
 msgid "Parent Developer:"
 msgstr ""
 
-#: swinfo_main.php:62
+#: swinfo.php:66
 msgid "Edit Developer"
 msgstr ""
 
-#: swinfo_main.php:63
+#: swinfo.php:67
 msgid "Update Developer"
 msgstr ""
 
-#: swinfo_main.php:64
+#: swinfo.php:68
 msgid "Add New Developer"
 msgstr ""
 
-#: swinfo_main.php:65
+#: swinfo.php:69
 msgid "New Developer Name"
 msgstr ""
 
-#: swinfo_main.php:81 swinfo_main.php:82 swinfo_main.php:89
+#: swinfo.php:85 swinfo.php:86 swinfo.php:93
 msgid "Year"
 msgstr ""
 
-#: swinfo_main.php:83
+#: swinfo.php:87
 msgid "Search Year"
 msgstr ""
 
-#: swinfo_main.php:84
+#: swinfo.php:88
 msgid "All Years"
 msgstr ""
 
-#: swinfo_main.php:85
+#: swinfo.php:89
 msgid "Edit Year"
 msgstr ""
 
-#: swinfo_main.php:86
+#: swinfo.php:90
 msgid "Update Year"
 msgstr ""
 
-#: swinfo_main.php:87
+#: swinfo.php:91
 msgid "Add New Year"
 msgstr ""
 
-#: swinfo_main.php:88
+#: swinfo.php:92
 msgid "New Year Name"
 msgstr ""
 
-#: swinfo_main.php:117
+#: swinfo.php:165
 msgid "Additional"
 msgstr ""
 
-#: swinfo_main.php:118
-msgid "Help"
+#: swinfo.php:177
+msgid "Actual version"
+msgstr ""
+
+#: swinfo.php:211
+msgid ""
+"Add software. You can enter shortcode [swinfo id='' width=''] on any page to "
+"show software card or cards."
+msgstr ""
+
+#: swinfo.php:212
+msgid ""
+"id - list of ids of software posts. You can find it on software list page."
+msgstr ""
+
+#: swinfo.php:213
+msgid "width - width of software card in %."
+msgstr ""
+
+#: swinfo.php:214
+msgid "Shortcode examples:"
+msgstr ""
+
+#: swinfo.php:215
+msgid ""
+"[swinfo id=\"all\" width=\"100%\"]: displays all software posts, width of "
+"software card is 100% of parent container."
+msgstr ""
+
+#: swinfo.php:216
+msgid ""
+"[swinfo id=\"2,6,7\" width=\"70%\"]: displays software posts with ids 2,6 "
+"and 7, width of software card is 70% of parent container."
+msgstr ""
+
+#: swinfo.php:217
+msgid ""
+"[swinfo id=\"12\" width=\"30%\"]: displays one software posts with id 12, "
+"width of software card is 30% of parent container."
+msgstr ""
+
+#: swinfo.php:222
+msgid "This software id is "
+msgstr ""
+
+#: swinfo.php:317
+msgid "Read more"
+msgstr ""
+
+#: swinfo.php:399
+msgid "Software plugin settings"
+msgstr ""
+
+#: swinfo.php:414
+msgid "Background color of relevant software card in HEX format."
+msgstr ""
+
+#: swinfo.php:421
+msgid "Background color of relevant software 'Read more' button in HEX format."
+msgstr ""
+
+#: swinfo.php:428
+msgid "Background color of not relevant software card in HEX format."
+msgstr ""
+
+#: swinfo.php:435
+msgid ""
+"Background color of not relevant software 'Read more' button in HEX format."
+msgstr ""
+
+#: swinfo.php:446
+msgid "Main options"
+msgstr ""
+
+#: swinfo.php:448
+msgid "Actual card color"
+msgstr ""
+
+#: swinfo.php:449
+msgid "Actual button color"
+msgstr ""
+
+#: swinfo.php:450
+msgid "Not relevant card color"
+msgstr ""
+
+#: swinfo.php:451
+msgid "Not relevant button color"
+msgstr ""
+
+#: swinfo.php:452
+msgid "Delete logs after plugin deactivation?"
+msgstr ""
+
+#: swinfo.php:464
+msgid "Software settings page"
+msgstr ""
+
+#: swinfo.php:464
+msgid "Software settings"
 msgstr ""
