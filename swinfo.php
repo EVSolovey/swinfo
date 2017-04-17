@@ -291,7 +291,7 @@ Domain Path: /languages
 						$button_div = 'class="swi_btn_red"';
 					}
 				}
-				if (has_post_thumbnail($soft->ID)) {
+				if (has_post_thumbnail($soft->ID)) { 
 					$sw_image=get_the_post_thumbnail( $soft->ID);
 					$sw_image_output = '<a href="'.$soft->guid.'">'.$sw_image.'</a>';
 				} else {
