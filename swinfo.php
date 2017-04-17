@@ -262,7 +262,7 @@ Domain Path: /languages
 			$swi_opt_btn_actual = get_option("swi_actual_button_color");
 			$swi_opt_btn_non_actual=get_option("swi_non_actual_button_color");
 			foreach ($softw_array as $soft) {
-				$sw_image = get_the_post_thumbnail_url($soft->ID);
+				//$sw_image = get_the_post_thumbnail_url($soft->ID);
 				$actuality = get_post_meta($soft->ID,'_swi_relevance',true);
 				if ($actuality=='on') {
 					if (($swi_opt_actual)&&(preg_match( '/^#[a-f0-9]{6}$/i', $swi_opt_actual ))) {
@@ -291,8 +291,9 @@ Domain Path: /languages
 						$button_div = 'class="swi_btn_red"';
 					}
 				}
-				if ($sw_image) {
-					$sw_image_output = '<a href="'.$soft->guid.'"><img src="'.$sw_image.'"></a>';
+				if (has_post_thumbnail($soft->ID)) {
+					$sw_image=get_the_post_thumbnail( $soft->ID);
+					$sw_image_output = '<a href="'.$soft->guid.'">'.$sw_image.'</a>';
 				} else {
 					$sw_image_output='';
 				}
